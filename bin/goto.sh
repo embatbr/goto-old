@@ -9,6 +9,11 @@ label() {
     bootstrap_goto.py label $ARGS
 }
 
+list() {
+    ARGS="$@"
+    bootstrap_goto.py list $ARGS
+}
+
 goto() {
     ARGS="$@"
     bootstrap_goto.py goto $ARGS > /tmp/goto
