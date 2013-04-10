@@ -1,13 +1,15 @@
 # coding: utf-8
 import os
 import re
+import platform
 import commands
 from distutils.core import setup
 from setuptools.command.install import install
 
 
 HOME_DIRECTORY = os.path.expanduser("~")
-BASHRC_FILE = '.bashrc'
+SYSTEM_PLATFORM = platform.system()
+BASHRC_FILE = '.bash_profile' if (SYSTEM_PLATFORM == 'Darwin') else '.bashrc'
 BASHRC_PATH = os.path.join(HOME_DIRECTORY, BASHRC_FILE)
 
 RE = re.compile(r'^\. .*goto.sh')
