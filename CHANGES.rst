@@ -25,6 +25,8 @@ current/unstable
 
 * Auto remove "dangling" label when the user tries to goto to it.
 
+* `label` now have the option `target`. Defined on issue 4.
+
 v0.1.1
 ------
 
