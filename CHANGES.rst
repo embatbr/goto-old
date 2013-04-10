@@ -25,9 +25,9 @@ current/unstable
 
 * Auto remove "dangling" label when the user tries to goto to it.
 
-* `label` now have the option `target`. Defined on issue 4.
+* `label` now has the option `target`. Defined on issue 4.
 
-* `goto` now have a target list option. Type 'goto -l label' and it lists the label's path content.
+* `goto` now has a target list option. Type 'goto -l label' and it lists the label's path content.
 
 v0.1.1
 ------
