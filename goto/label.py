@@ -61,12 +61,15 @@ def main():
     group.add_argument('-i', '--insert', action='store_const', dest='mode',
                                     const='insert', help='insert a new label')
     parser.add_argument('label', nargs='?', help='name of the label')
+    parser.add_argument('target', nargs='?', help='path to the label targets')
     args = parser.parse_args()
 
     if not args.label and args.mode in ['delete', 'replace']:
         parser.error('can\'t %s without specify a label.' % args.mode)
 
-    curr_dir = unicode(os.getcwd(), encoding)
+    curr_dir = args.target
+    if curr_dir is None:
+        curr_dir = unicode(os.getcwd(), encoding)
     if args.label:
         args.label = unicode(args.label, encoding)
 
