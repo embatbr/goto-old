@@ -47,8 +47,7 @@ def change_directory(label):
 def main():
     """Entrypoint for the `goto` utility."""
     parser = argparse.ArgumentParser()
-    group = parser.add_mutually_exclusive_group()
-    group.set_defaults(mode='goto')
+    parser.set_defaults(mode='goto')
     parser.add_argument('label', nargs='?', help='name of the label')
 
     args = parser.parse_args()
