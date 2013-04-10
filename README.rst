@@ -39,6 +39,13 @@ But if the label does not exists, an error is thrown::
     $ goto connman
     connman is not a valid label.
 
+The option -l lists a label target::
+
+    $ goto -l home
+    dados
+    desktop
+    octave-core
+
 
 label
 -----

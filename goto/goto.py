@@ -29,8 +29,12 @@ def list_labels():
 
 
 def list_target_content(label):
-    target = storage.get(label)
-    subprocess.call('ls %s' % target, shell=True)
+    try:
+        target = storage.get(label)
+        subprocess.call('ls %s' % target, shell=True)
+    except NoOptionError:
+        sys.stderr.write('%s is not a valid label.\n' % label)
+        sys.exit(1)
 
 
 def change_directory(label):
