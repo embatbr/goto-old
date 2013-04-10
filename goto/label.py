@@ -1,4 +1,9 @@
 # coding: utf-8
+
+
+"""Implementation of command 'label'."""
+
+
 import sys
 import os
 import re

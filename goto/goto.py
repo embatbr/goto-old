@@ -1,8 +1,15 @@
 # coding: utf-8
+
+
+"""Implementation of command 'goto'."""
+
+
 import os
 import sys
 import locale
 import argparse
+import subprocess
+
 from storage import Storage, NoOptionError, LABEL_SIZE
 
 
@@ -19,6 +26,11 @@ def list_labels():
     for label, path in labels.iteritems():
         s = u'%s  %s' % (format_label(label), path)
         print s.encode(encoding)
+
+
+def list_target_content(label):
+    target = storage.get(label)
+    subprocess.call('ls %s' % target, shell=True)
 
 
 def change_directory(label):
@@ -41,13 +53,21 @@ def change_directory(label):
 def main():
     """Entrypoint for the `goto` utility."""
     parser = argparse.ArgumentParser()
+    group = parser.add_mutually_exclusive_group()
+    group.set_defaults(mode='')
+    group.add_argument('-l', '--list', action='store_const', dest='mode',
+                            const='list', help='list the target of a label')
     parser.add_argument('label', nargs='?', help='name of the label')
-
     args = parser.parse_args()
+
+    if not args.label and args.mode in ['list']:
+        parser.error('can\'t %s without specify a label.' % args.mode)
 
     storage.open_or_create()
 
-    if args.label:
+    if args.mode == 'list':
+        list_target_content(args.label)
+    elif args.label:
         label = unicode(args.label, encoding)
         change_directory(label)
     else:
