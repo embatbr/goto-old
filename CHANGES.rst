@@ -27,6 +27,8 @@ current/unstable
 
 * `label` now have the option `target`. Defined on issue 4.
 
+* `goto` now have a target list option. Type 'goto -l label' and it lists the label's path content.
+
 v0.1.1
 ------
 
