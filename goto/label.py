@@ -9,6 +9,7 @@ import os
 import re
 import locale
 import argparse
+
 from storage import Storage, LabelAlreadyExistsError, LabelTooLongError, LabelInvalidFormatError, LABEL_SIZE
 
 
@@ -63,11 +64,11 @@ def main():
                             const='delete', help='delete an existing label')
     group.add_argument('-r', '--replace', action='store_const', dest='mode',
                             const='replace', help='replace an existing label')
-    group.add_argument('-i', '--insert', action='store_const', dest='mode',
-                                    const='insert', help='insert a new label')
     parser.add_argument('label', nargs='?', help='name of the label')
     parser.add_argument('target', nargs='?', help='path to the label targets')
+
     args = parser.parse_args()
+    storage.open_or_create()
 
     if not args.label and args.mode in ['delete', 'replace']:
         parser.error('can\'t %s without specify a label.' % args.mode)
@@ -78,14 +79,10 @@ def main():
     if args.label:
         args.label = unicode(args.label, encoding)
 
-    storage.open_or_create()
-
     if args.mode == 'delete':
         delete(args.label)
-
     elif args.mode == 'replace':
         replace(args.label, curr_dir)
-
     else:
         if not args.label:
             args.label = curr_dir[curr_dir.rfind('/')+1:]
