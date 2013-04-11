@@ -14,7 +14,7 @@ from storage import Storage, NoOptionError
 
 
 storage = Storage()
-language, encoding = locale.getdefaultlocale()
+(language, encoding) = locale.getdefaultlocale()
 
 
 def list_target_content(label, mode):

@@ -14,7 +14,7 @@ from storage import Storage, LabelAlreadyExistsError, LabelTooLongError, LabelIn
 
 
 storage = Storage()
-language, encoding = locale.getdefaultlocale()
+(language, encoding) = locale.getdefaultlocale()
 
 
 def delete(label):

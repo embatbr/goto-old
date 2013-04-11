@@ -13,7 +13,7 @@ from storage import Storage, NoOptionError, LABEL_SIZE
 
 
 storage = Storage()
-language, encoding = locale.getdefaultlocale()
+(language, encoding) = locale.getdefaultlocale()
 
 
 def format_label(label):
@@ -22,7 +22,7 @@ def format_label(label):
 
 def list_labels():
     labels = storage.get_all()
-    for label, path in labels.iteritems():
+    for (label, path) in labels.iteritems():
         s = u'%s  %s' % (format_label(label), path)
         print s.encode(encoding)
 
