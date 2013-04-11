@@ -54,8 +54,9 @@ def main():
     storage.open_or_create()
 
     if args.label:
-        args.label = unicode(args.label, encoding)
-        change_directory(args.label)
+        label = unicode(args.label, encoding)
+        change_directory(label)
+        storage.push(label)
     else:
         list_labels()
 

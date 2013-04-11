@@ -1,20 +1,12 @@
 #!/usr/bin/env sh
 
-goto_dir() {
+goto_dir()
+{
     cd "$@"
 }
 
-label() {
-    ARGS="$@"
-    bootstrap_goto.py label $ARGS
-}
-
-list() {
-    ARGS="$@"
-    bootstrap_goto.py list $ARGS
-}
-
-goto() {
+goto()
+{
     ARGS="$@"
     bootstrap_goto.py goto $ARGS > /tmp/goto
 
@@ -33,4 +25,22 @@ goto() {
     fi
 
     rm /tmp/goto
+}
+
+label()
+{
+    ARGS="$@"
+    bootstrap_goto.py label $ARGS
+}
+
+list()
+{
+    ARGS="$@"
+    bootstrap_goto.py list $ARGS
+}
+
+goback()
+{
+    ARGS="$@"
+    bootstrap_goto.py goback $ARGS
 }

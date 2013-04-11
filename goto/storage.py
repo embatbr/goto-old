@@ -5,10 +5,14 @@ import codecs
 from configparser import UnicodeConfigParser, NoOptionError
 
 
-HOME_DIRECTORY = os.path.expanduser("~")
-LABEL_STORAGE_FILE = '.goto'
-LABEL_STORAGE_PATH = os.path.join(HOME_DIRECTORY, LABEL_STORAGE_FILE)
+HOME_DIR = os.path.expanduser("~")
+STORAGE_DIR = '%s/.goto' % HOME_DIR
+LABEL_STORAGE_FILE = 'labels'
+LABEL_STORAGE_PATH = os.path.join(STORAGE_DIR, LABEL_STORAGE_FILE)
 LABELS_SECTION = u'labels'
+STACK_STORAGE_FILE = 'stack'
+STACK_STORAGE_PATH = os.path.join(STORAGE_DIR, STACK_STORAGE_FILE)
+STACK_SECTION = u'stack'
 
 LABEL_SIZE = 32
 
@@ -16,44 +20,60 @@ LABEL_RE = re.compile(r'^[^\s/]+$', re.UNICODE)
 
 
 class Storage(object):
-    def __init__(self, file_name=LABEL_STORAGE_PATH, labels_section=LABELS_SECTION):
+    def __init__(self, goto_dir=STORAGE_DIR, label_filename=LABEL_STORAGE_PATH,
+        labels_section=LABELS_SECTION, stack_filename=STACK_STORAGE_PATH,
+        stack_section=STACK_SECTION):
+        """__init__"""
+        self.goto_dir = goto_dir
         self.parser = UnicodeConfigParser()
-        self.file_name = file_name
+        self.label_filename = label_filename
         self.labels_section = labels_section
+        self.stack_filename = stack_filename
+        self.stack_section = stack_section
 
 
     ########## FILE MANIPULATION ##########
 
-    def _persist(self):
+    def _persist(self, filename):
         """Refreshs the file with the last changes."""
-        with codecs.open(self.file_name, 'w', encoding='utf-8') as f:
+        if not os.path.exists(self.goto_dir):
+            os.makedirs(self.goto_dir)
+        with codecs.open(filename, 'w', encoding='utf-8') as f:
             self.parser.write(f)
 
 
-    def _create(self):
+    def _create(self, filename, section):
         """
         Creates the label file and put a default session where the labels will
         be stored.
         """
-        self.parser.add_section(self.labels_section)
-        self._persist()
+        self.parser.add_section(section)
+        self._persist(filename)
 
 
-    def open(self):
+    def open(self, filename):
         """Loads the parser with data from the label file."""
-        with codecs.open(self.file_name, 'r', encoding='utf-8') as f:
+        with codecs.open(filename, 'r', encoding='utf-8') as f:
             self.parser.readfp(f)
 
 
     def open_or_create(self):
         """
-        Tries to open the label file, if an error occurs, create the file.
+        Tries to open label and stack files, if an error occurs, create the file.
         """
+        # label file
         try:
-            self.open()
+            self.open(self.label_filename)
         except IOError:
-            self._create()
-            self.open()
+            self._create(self.label_filename, self.labels_section)
+            self.open(self.label_filename)
+
+        # stack file
+        # try:
+        #     self.open(self.stack_filename)
+        # except IOError:
+        #     self._create(self.stack_filename, self.stack_section)
+        #     self.open(self.stack_filename)
 
 
     ########## LABEL MANIPULATION ##########
@@ -82,7 +102,7 @@ class Storage(object):
             raise LabelInvalidFormatError()
 
         self.parser.set(self.labels_section, label, path)
-        self._persist()
+        self._persist(self.label_filename)
 
 
     def add(self, label, path):
@@ -99,7 +119,16 @@ class Storage(object):
     def remove(self, label):
         """Removes a label and it's path."""
         self.parser.remove_option(self.labels_section, label)
-        self._persist()
+        self._persist(self.label_filename)
+
+
+    ########## STACK MANIPULATION ##########
+
+    def push(self, label):
+        print 'PUSHED label', label
+
+    def pop(self, ntimes=1):
+        pass
 
 
 class LabelAlreadyExistsError(Exception):

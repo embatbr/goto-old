@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys
-from goto import goto_main, label_main, list_main
+from goto import goto_main, label_main, list_main#, goback_main
 
 
 def bootstrap():
@@ -13,6 +13,9 @@ def bootstrap():
         return label_main()
     elif 'list' in sys.argv[0]:
         return list_main()
+    elif 'goback' in sys.argv[0]:
+        # return goback_main()
+        print 'TODO goback'
     sys.exit(-1)
 
 
