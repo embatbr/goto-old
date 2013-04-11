@@ -27,20 +27,20 @@ goto()
     rm /tmp/goto
 }
 
-label()
+goto-label()
 {
     ARGS="$@"
-    bootstrap_goto.py label $ARGS
+    bootstrap_goto.py goto-label $ARGS
 }
 
-list()
+goto-list()
 {
     ARGS="$@"
-    bootstrap_goto.py list $ARGS
+    bootstrap_goto.py goto-list $ARGS
 }
 
-goback()
+goto-back()
 {
     ARGS="$@"
-    bootstrap_goto.py goback $ARGS
+    bootstrap_goto.py goto-back $ARGS
 }
