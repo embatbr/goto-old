@@ -27,9 +27,11 @@ def list_labels():
         print s.encode(encoding)
 
 
-def change_directory(label):
+def change_directory(label, subdir=None):
     try:
         path = storage.get(label)
+        if subdir:
+            path = '%s/%s' % (path, subdir)
         if not os.path.isdir(path):
             raise DanglingLabelError()
         print '<PATH>'
@@ -49,13 +51,15 @@ def main():
     parser = argparse.ArgumentParser()
     parser.set_defaults(mode='goto')
     parser.add_argument('label', nargs='?', help='name of the label')
+    parser.add_argument('subdir', nargs='?', help='subdir inside label\'s target')
 
     args = parser.parse_args()
     storage.open_or_create()
 
     if args.label:
         label = unicode(args.label, encoding)
-        change_directory(label)
+        subdir = None if not args.subdir else unicode(args.subdir, encoding)
+        change_directory(label, subdir)
         storage.push(label)
     else:
         list_labels()
